@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: python-time-pod
+spec:
+  containers:
+    - name: python-container
+      image: python:3.9-slim
+      command:
+        - python3
+        - -u
+        - -c
+        - |
+          from datetime import datetime
+          import time
+          while True:
+              print(f"Current time: {datetime.now()}")
+              time.sleep(10)
