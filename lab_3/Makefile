@@ -6,7 +6,7 @@ run:
 	kubectl apply -f $(PYTHON_POD_YAML)
 	kubectl apply -f $(REDIS_DEPLOYMENT_YAML)
 	kubectl apply -f $(REDIS_SERVICE_YAML)
-	echo "All entities have been created."
+	@echo "All entities have been created."
 
 check:
 	kubectl logs python-time-pod | tail -n 1
@@ -23,4 +23,4 @@ remove:
 	kubectl delete -f $(PYTHON_POD_YAML)
 	kubectl delete -f $(REDIS_DEPLOYMENT_YAML)
 	kubectl delete -f $(REDIS_SERVICE_YAML)
-	echo "All entities have been removed."
+	@echo "All entities have been removed."
