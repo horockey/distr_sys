@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: localhost:5000/backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: CLICKHOUSE_HOST
+              value: "clickhouse-service"
+            - name: CLICKHOUSE_PORT
+              value: "9000"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
