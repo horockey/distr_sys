@@ -21,6 +21,9 @@ run:
 
 	kubectl apply -f frontend-ingress.yaml
 
+	kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+	kubectl apply -f backend-hpa.yaml
+
 	@echo "All entities have been created."
 
 update_etc_hosts:
@@ -32,7 +35,11 @@ update_etc_hosts:
 	echo "$$INGRESS_IP frontend.example.com" | sudo tee -a /etc/hosts
 
 check:
-	@echo "TODO: check section"
+	kubectl get pods -o wide
+	kubectl get services
+	kubectl get ingress
+	kubectl get deployment metrics-server -n kube-system
+	kubectl get hpa
 
 remove:
 	kubectl delete -f frontend-service.yaml
@@ -41,5 +48,6 @@ remove:
 	kubectl delete -f backend-deployment.yaml
 	kubectl delete -f clickhouse-service.yaml
 	kubectl delete -f clickhouse-deployment.yaml
+	kubectl delete -f backend-hpa.yaml
 
 	@echo "All entities have been removed."
