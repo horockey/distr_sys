@@ -18,8 +18,18 @@ run:
 
 	kubectl apply -f frontend-deployment.yaml
 	kubectl apply -f frontend-service.yaml
-	
+
+	kubectl apply -f frontend-ingress.yaml
+
 	@echo "All entities have been created."
+
+update_etc_hosts:
+	@INGRESS_IP=$$(kubectl get ingress frontend-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}'); \
+	if [ -z "$$INGRESS_IP" ]; then \
+		echo "Ingress IP not found. Please check if the Ingress is properly configured."; \
+		exit 1;\
+	fi; \
+	echo "$$INGRESS_IP frontend.example.com" | sudo tee -a /etc/hosts
 
 check:
 	@echo "TODO: check section"
