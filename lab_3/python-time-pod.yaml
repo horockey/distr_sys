@@ -6,6 +6,9 @@ spec:
   containers:
     - name: python-container
       image: python:3.9-slim
+      env:
+        - name: TZ
+          value: "Europe/Moscow"
       command:
         - python3
         - -u
